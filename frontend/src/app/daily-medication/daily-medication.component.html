@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="header">
+      <h1>{{ selectedDate | date:'mediumDate' }}</h1>
+    </div>
+    
+    <div class="medication-time" *ngFor="let timeOfDay of timeCategories">
+      <h2>
+        <i class="material-icons">{{ getTimeIcon(timeOfDay) }}</i> 
+        {{ timeOfDay | titlecase }}
+        <span class="time">{{ getTimeSlot(timeOfDay) }}</span>
+      </h2>
+      <div *ngIf="medicines[timeOfDay].length; else noMeds" class="medication-list">
+        <div *ngFor="let med of medicines[timeOfDay]" class="medication-item">
+          <div class="icon-placeholder">
+            <i class="material-icons">medication</i>
+          </div>
+          <div class="details">
+            <h3>{{ med.name }}</h3>
+            <p>{{ med.dosage }} {{ med.form }}, {{ med.qualifier }}</p>
+          </div>
+          <div class="status">
+            <i class="material-icons">check_circle</i>
+          </div>
+        </div>
+      </div>
+      <ng-template #noMeds>
+        <p>No Medicines at the moment</p>
+      </ng-template>
+    </div>
+  </div>

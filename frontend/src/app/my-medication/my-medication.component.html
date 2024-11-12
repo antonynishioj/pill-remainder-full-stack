@@ -1,0 +1,14 @@
+
+
+<h2>My Medications</h2>
+
+<div class="medications-list" *ngIf="medications.length > 0; else noMeds">
+  <div *ngFor="let med of medications">
+    <h3>{{ med.name }}</h3>
+    <p>{{ med.dosage }} {{ med.form }}, {{ med.qualifier }}</p>
+  </div>
+</div>
+<ng-template #noMeds>
+  <p>No medications found for today.</p>
+</ng-template>
+<button routerLink="/add-medicine">Add New Medicine</button>

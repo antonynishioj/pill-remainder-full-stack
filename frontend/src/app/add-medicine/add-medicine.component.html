@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="header">
+        <i class="fas fa-arrow-left" (click)="goBack()"></i>
+        <h1>Add Medicine</h1>
+    </div>
+    <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="drug-name">Drug Name</label>
+            <div class="input-group">
+                <input type="text" id="drug-name" formControlName="name">
+                <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <ul *ngIf="showDrugList && filteredDrugs.length > 0" class="drug-list">
+                <li *ngFor="let drug of filteredDrugs" (click)="selectDrug(drug)">{{ drug.name }}</li>
+            </ul>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group form-half">
+                <label for="form">
+                    <i class="fas fa-capsules"></i> Form
+                </label>
+                <select id="form" formControlName="form">
+                    <option>Capsule</option>
+                    <option>Tablet</option>
+                    <option>Liquid</option>
+                </select>
+            </div>
+            
+            <div class="form-group form-half">
+                <label for="strength">
+                    <i class="fas fa-weight"></i> Strength
+                </label>
+                <div class="input-group">
+                    <input type="text" id="strength" formControlName="strength" placeholder="eg. 500">
+                    <select formControlName="strengthUnit" class="unit-select">
+                        <option>mg</option>
+                        <option>ml</option>
+                        <option>g</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group form-half">
+                <label for="dosage">
+                    <i class="fas fa-prescription-bottle"></i> Dosage
+                </label>
+                <input type="number" id="dosage" formControlName="dosage" placeholder="No.s">
+            </div>
+            
+            <div class="form-group form-half">
+                <label for="qualifier">
+                    <i class="fas fa-utensils"></i> Qualifier
+                </label>
+                <select id="qualifier" formControlName="qualifier">
+                    <option>Before Food</option>
+                    <option>After Food</option>
+                    <option>With Food</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group form-half">
+                <label for="start-date">
+                    <i class="fas fa-calendar-alt"></i> Start Date
+                </label>
+                <input type="date" id="start-date" formControlName="startDate">
+            </div>
+            
+            <div class="form-group form-half">
+                <label for="duration">
+                    <i class="fas fa-clock"></i> Duration
+                </label>
+                <input type="number" id="duration" formControlName="duration" placeholder="No.s Days">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>
+                <i class="fas fa-clock"></i> Frequency (How many times a day?)
+            </label>
+            <div class="frequency-group" formGroupName="frequency">
+                <button type="button" *ngFor="let time of frequencyButtons" 
+                        [class.active]="medicineForm.get('frequency')?.get(time)?.value"
+                        (click)="toggleFrequency(time)">
+                    <i class="fas" [ngClass]="{
+                        'fa-sunrise': time === 'Morning', 
+                        'fa-cloud-sun': time === 'Afternoon', 
+                        'fa-sunset': time === 'Evening', 
+                        'fa-moon': time === 'Night'
+                    }"></i>
+                    {{time}}
+                </button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="inventory-row">
+                <div class="inventory-label">
+                    <i class="fas fa-prescription-bottle-alt"></i> Add meds in Inventory
+                </div>
+                <div class="inventory-inputs">
+                    <input type="number" formControlName="inventoryCount" placeholder="No.s">
+                    <span>Remind me when</span>
+                    <input type="number" formControlName="inventoryReminder" placeholder="No.s left">
+                </div>
+            </div>
+            <div class="refill-toggle">
+                <span>Refill Reminder</span>
+                <div class="toggle-switch" 
+                     [class.active]="medicineForm.get('refillReminder')?.value"
+                     (click)="toggleRefillReminder()">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="add-medicine-btn">Add Medicine</button>
+        </div>
+    </form>
+</div>

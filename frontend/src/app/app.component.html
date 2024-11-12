@@ -1,0 +1,81 @@
+<ng-container *ngIf="router.url === '/add-medicine'; else homePage">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<ng-template #homePage>
+  <div class="container">
+    <div class="header">
+      My Medication
+    </div>
+    
+    <div class="tabs">
+      <div class="tab" [class.active]="activeTab === 'today'" (click)="setActiveTab('today')">
+        Today's Medication
+      </div>
+      <div class="tab" [class.active]="activeTab === 'inventory'" (click)="setActiveTab('inventory')">
+        My Inventory
+      </div>
+    </div>
+  
+    <div class="date-picker">
+      <div class="arrow" (click)="moveDate('prev')">&lt;</div>
+      <div class="date">
+        <div 
+          *ngFor="let dateItem of dates" 
+          [class.selected]="dateItem.selected"
+          (click)="selectDate(dateItem)"
+        >
+        
+          <span>{{ dateItem.day }}</span>
+          <span>{{ dateItem.date | date:'d MMM' }}</span>
+        </div>
+      </div>
+      <div class="arrow" (click)="moveDate('next')">&gt;</div>
+    </div>
+
+    <div class="medications-list">
+      <h2 class="hed">Medicines for {{ selectedDate | date:'mediumDate' }}</h2>
+      <div *ngIf="medicines.length; else noMeds" class="medication-list">
+        <div *ngFor="let med of medicines" class="medication-item">
+          <div class="icon-placeholder">
+            <i class="material-icons">medication</i>
+          </div>
+          <div class="details">
+            <h3>{{ med.name }}</h3>
+            <p>{{ med.dosage }} {{ med.form }}, {{ med.qualifier }}</p>
+          </div>
+          <div class="status">
+            <i class="material-icons">check_circle</i>
+          </div>
+        </div>
+      </div>
+      <ng-template #noMeds>
+        <p class="nme">No Medicines at the moment</p>
+      </ng-template>
+    </div>
+
+    <div class="today">
+      Today, {{ currentDate | date:'d MMM' }}
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  
+    <div class="content">
+      <div class="icon-placeholder">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <h2>Monitor your med schedule</h2>
+      <p>View your daily schedule and mark your meds when taken</p>
+    </div>
+  
+    <button class="add-medicine" routerLink="/add-medicine">Add Medicine</button>
+  
+    <div class="footer">
+      <div *ngFor="let item of menuItems" 
+           [class.active]="item.active" 
+           (click)="setActiveMenuItem(item); navigateHome(item)">
+        <i [class]="item.icon"></i>
+        {{ item.label }}
+      </div>
+    </div>
+  </div>
+</ng-template>
